@@ -122,15 +122,17 @@ for i in range(0, int(case_count)):
 
 # PART 2. PREDICTING PROBABILITY VALUE OF NEXT STATE
 
+# temp
+sample = "S3E3"
+sample2 = "S3F3"
+given.clear()
+given.append(sample)
+given.append(sample2)
+# delete later
 
-string = "S3E3"
-
-# given.clear()
-# given.append(string)
-
-str_len = len(string)
-for j in range(0, int(case_count)):
-#for j in range(0, 1):
+str_len = len(sample)
+#for j in range(0, int(case_count)):
+for j in range(0, 2):   # temp
     check_num = int(given[j][1])    # if T3E3 = 3
     #print(given[j])
     #check_num = int(string[1])
