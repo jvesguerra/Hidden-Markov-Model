@@ -7,6 +7,8 @@ with open("hmm.in",'r') as file:
         data.append(row.rstrip('\n'))
 file.close()
 
+output = open('output.txt', 'w')
+
 # modify data array
 for i in range(3,7):
     temp = data[i].split(' ')   # splits S T to array for easier indexing
@@ -93,8 +95,8 @@ for i in range(0,string_len-1):
 
 prob_dict[key[0]+key[1]] = st_total/t_total
 
-print(prob_dict)
-print()
+# print(prob_dict)
+# print()
 
 # For E and F
 
@@ -116,20 +118,24 @@ for i in range(0, int(case_count)):
     given_string = temp[0]+temp[2]
     given.append(given_string)
 
-print(given)
+# print(given)
 
 # PART 2. PREDICTING PROBABILITY VALUE OF NEXT STATE
 
-# check array of what to get
 
+string = "S3E3"
 
-# loop for the given
+# given.clear()
+# given.append(string)
 
-#for i in range(0, int(case_count)):
-for i in range(0, 1):
-    check_num = int(given[i][1])    # if T3E3 = 3
+str_len = len(string)
+for j in range(0, int(case_count)):
+#for j in range(0, 1):
+    check_num = int(given[j][1])    # if T3E3 = 3
+    #print(given[j])
+    #check_num = int(string[1])
 
-    for i in range(0,check_num):
+    for i in range(0,check_num+1):
         index = i + 1
         if i == 0:
             s_Total_prob = prob_dict.get("SS")*prob_dict.get("S") + prob_dict.get("ST")*prob_dict.get("T")
@@ -144,9 +150,9 @@ for i in range(0, 1):
             Sn = key[0]+ str(i)
             Tn = key[1]+ str(i)
 
-            # for solving E
-            Sn2 = key[0]+ str(index)
-            Tn2 = key[1]+ str(index)
+            # # for solving E
+            # Sn2 = key[0]+ str(index)
+            # Tn2 = key[1]+ str(index)
 
             # solve T
             t_Total_prob = prob_dict.get("TS")*prob_dict.get(Sn)+prob_dict.get("TT")*prob_dict.get(Tn)
@@ -156,23 +162,43 @@ for i in range(0, 1):
             s_Total_prob = prob_dict.get("SS")*prob_dict.get(Sn) + prob_dict.get("ST")*prob_dict.get(Tn)
             prob_dict[key1] = s_Total_prob
 
-            #solve E
-            e_Total_prob = prob_dict.get("SE")*prob_dict.get(Sn2)+prob_dict.get("TE")*prob_dict.get(Tn2) #E1
-            prob_dict[p_states[0]+str(index)] = e_Total_prob
+    # E should run in i
+            if "S1" in prob_dict.keys() or "T1" in prob_dict.keys():
+                #solve E
+                e_Total_prob = prob_dict.get("SE")*prob_dict.get(Sn)+prob_dict.get("TE")*prob_dict.get(Tn) #E1
+                prob_dict[p_states[0]+str(i)] = e_Total_prob
 
-            #solve F
-            e_Total_prob = prob_dict.get("SE")*prob_dict.get(Sn2)+prob_dict.get("TE")*prob_dict.get(Tn2) #E1
-            prob_dict[p_states[0]+str(index)] = e_Total_prob
+                #solve F
+                f_Total_prob = prob_dict.get("SF")*prob_dict.get(Sn)+prob_dict.get("TF")*prob_dict.get(Tn) #E1
+                prob_dict[p_states[1]+str(i)] = f_Total_prob
 
-    print(prob_dict)
-    print()
+    # print(prob_dict)
+    # print()
+
+    if str_len == 4:
+        key1 = given[j][0] + str(check_num)
+        key2 = given[j][2] + str(check_num)
+        key3 = given[j][0] + given[j][2]
+
+        temp = prob_dict.get(key3)*prob_dict.get(key1)/prob_dict.get(key2)
+        prob_dict[given[j]] = temp
+
+    # print(prob_dict)
+    # print()
 
     # END OF PART 2
 
-    # to get E to S
+new_d = {}
+for k in sorted(prob_dict, key=len, reverse=True):
+    new_d[k] = prob_dict[k]
 
-        #temp_e =  prob_dict.get("SE")*prob_dict.get(Sn)/prob_dict.get(En)
-        #temp_t =  prob_dict.get("TE")*prob_dict.get(Tn)/prob_dict.get(Fn)
+
+# print output
+for i in new_d :
+    output.write(i)
+    output.write(" ")
+    output.write(str(new_d[i]))
+    output.write("\n")
 
 
         
