@@ -93,48 +93,87 @@ for i in range(0,string_len-1):
 
 prob_dict[key[0]+key[1]] = st_total/t_total
 
-#print(prob_dict)
+print(prob_dict)
+print()
 
+# For E and F
+
+p_states = data[4]
+# initialize
+prob_dict[key[0]+p_states[0]] = 0.1   # S to E
+prob_dict[key[0]+p_states[1]] = 0.9   # S to F
+prob_dict[key[1]+p_states[0]] = 0.6   # T to E
+prob_dict[key[1]+p_states[1]] = 0.4   # T to F
 # END PART 1.
+
+
+# 1.5 Get what to solve 
+case_count = data[7]
+given = []
+counter = 8
+for i in range(0, int(case_count)):
+    temp = data[counter+i].split(' ')
+    given_string = temp[0]+temp[2]
+    given.append(given_string)
+
+print(given)
 
 # PART 2. PREDICTING PROBABILITY VALUE OF NEXT STATE
 
-# formula for total probability
-
 # check array of what to get
-test_string = "T3"
 
-char1 = key[0]+"1"
-char2 = key[1]+"1"
-check_let = test_string[0]
-check_num = int(test_string[1])
 
-for i in range(0,check_num):
-    if i == 0:
-        s_Total_prob = prob_dict.get("SS")*prob_dict.get("S") + prob_dict.get("ST")*prob_dict.get("T")
-        prob_dict["S1"] = s_Total_prob
-        t_Total_prob = prob_dict.get("TS")*prob_dict.get("S") + prob_dict.get("TT")*prob_dict.get("T")
-        prob_dict["T1"] = t_Total_prob
-    else:
-        key1 = key[0]+ str(i+1)  # for saving in dictionary
-        key2 = key[1]+ str(i+1)  # for saving in dictionary
+# loop for the given
 
-        # values
-        Sn = key[0]+ str(i)
-        Tn = key[1]+ str(i)
-        # print(prob_dict.get(Sn))
-        # print(prob_dict.get(Tn))
+#for i in range(0, int(case_count)):
+for i in range(0, 1):
+    check_num = int(given[i][1])    # if T3E3 = 3
 
-        # solve T
-        t_Total_prob = prob_dict.get(Tn)*prob_dict.get(Sn)+prob_dict.get("TT")*prob_dict.get(Tn)
-        prob_dict[key2] = t_Total_prob
-        #solve S
-        s_Total_prob = prob_dict.get("SS")*prob_dict.get(Sn) + prob_dict.get("ST")*prob_dict.get(Tn)
-        prob_dict[key1] = s_Total_prob
+    for i in range(0,check_num):
+        index = i + 1
+        if i == 0:
+            s_Total_prob = prob_dict.get("SS")*prob_dict.get("S") + prob_dict.get("ST")*prob_dict.get("T")
+            prob_dict["S1"] = s_Total_prob
+            t_Total_prob = prob_dict.get("TS")*prob_dict.get("S") + prob_dict.get("TT")*prob_dict.get("T")
+            prob_dict["T1"] = t_Total_prob
+        else:
+            key1 = key[0]+ str(i+1)  # for saving in dictionary
+            key2 = key[1]+ str(i+1)  # for saving in dictionary
 
-print(prob_dict)
+            # values
+            Sn = key[0]+ str(i)
+            Tn = key[1]+ str(i)
 
-# END OF PART 2
+            # for solving E
+            Sn2 = key[0]+ str(index)
+            Tn2 = key[1]+ str(index)
+
+            # solve T
+            t_Total_prob = prob_dict.get("TS")*prob_dict.get(Sn)+prob_dict.get("TT")*prob_dict.get(Tn)
+            prob_dict[key2] = t_Total_prob
+
+            #solve S
+            s_Total_prob = prob_dict.get("SS")*prob_dict.get(Sn) + prob_dict.get("ST")*prob_dict.get(Tn)
+            prob_dict[key1] = s_Total_prob
+
+            #solve E
+            e_Total_prob = prob_dict.get("SE")*prob_dict.get(Sn2)+prob_dict.get("TE")*prob_dict.get(Tn2) #E1
+            prob_dict[p_states[0]+str(index)] = e_Total_prob
+
+            #solve F
+            e_Total_prob = prob_dict.get("SE")*prob_dict.get(Sn2)+prob_dict.get("TE")*prob_dict.get(Tn2) #E1
+            prob_dict[p_states[0]+str(index)] = e_Total_prob
+
+    print(prob_dict)
+    print()
+
+    # END OF PART 2
+
+    # to get E to S
+
+        #temp_e =  prob_dict.get("SE")*prob_dict.get(Sn)/prob_dict.get(En)
+        #temp_t =  prob_dict.get("TE")*prob_dict.get(Tn)/prob_dict.get(Fn)
+
 
         
 
