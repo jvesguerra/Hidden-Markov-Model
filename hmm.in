@@ -3,8 +3,8 @@ STSSTSSSTT
 TSSSSSTTSS
 S T
 E F
-P(E|S) P(F|S)
-P(E|T) P(F|T)
+0.1 0.9
+0.6 0.4
 3
 S1 given E1
 T3 given E3
