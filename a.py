@@ -65,14 +65,23 @@ for run in range(0,loop_count):
     for i in range(0,string_len):
         if string[i] == key[0]: # if char == "S"
             s_total += 1
+        if string[i] == key[1]:
+            t_total += 1
+
+    if(string[string_len-1] == key[0]):
+        s_total = s_total - 1
+    
+    if(string[string_len-1] == key[1]):
+        t_total = t_total - 1
 
     # S with next state S
     ss_total = 0
-    for i in range(0,string_len-1):
-    #for i in range(0,string_len):
+    #for i in range(0,string_len-1):
+    for i in range(0,string_len):
         if string[i] == key[0]: # if char == "S"
-            if string[i+1] == key[0]: # if next char is also S
-                ss_total += 1
+            if i+1 < string_len:
+                if string[i+1] == key[0]: # if next char is also S
+                    ss_total += 1
 
     prob_dict[key[0]+key[0]] = ss_total/s_total
 
@@ -83,9 +92,12 @@ for run in range(0,loop_count):
             if string[i+1] == key[1]: # if next char is T
                 ts_total += 1
 
+    #if(string[0] == key[0]):
     prob_dict[key[1]+key[0]] = ts_total/s_total
-    t_total = ts_total
-
+    #if(string[0] == key[1]):
+        #prob_dict[key[1]+key[0]] = ts_total/t_total
+    #t_total = ts_total
+   
     # T with next state T
     tt_total = 0
     for i in range(0,string_len-1):
@@ -93,6 +105,7 @@ for run in range(0,loop_count):
             if string[i+1] == key[1]: # if next char is T
                 tt_total += 1
 
+    #prob_dict[key[1]+key[1]] = tt_total/t_total
     prob_dict[key[1]+key[1]] = tt_total/t_total
 
     # T with next state S
@@ -102,6 +115,7 @@ for run in range(0,loop_count):
             if string[i+1] == key[0]: # if next char is S
                 st_total += 1
 
+    #prob_dict[key[0]+key[1]] = st_total/t_total
     prob_dict[key[0]+key[1]] = st_total/t_total
 
     # given = ['S1E1', 'T3E3', 'S2F2']
@@ -180,22 +194,11 @@ for run in range(0,loop_count):
         # END SOLVING PART
 
 
-    print(prob_dict)
+    #print(prob_dict)
     prob_dict.clear()
     prob_dict = main_dict
     output.write("\n")
-    # # Sorting dictionary
-    # new_d = {}
-    # for k in sorted(prob_dict, key=len, reverse=True):
-    #     new_d[k] = prob_dict[k]
 
-
-    # # save output
-    # for i in new_d :
-    #     output.write(i)
-    #     output.write(" ")
-    #     output.write(str(new_d[i]))
-    #     output.write("\n")
 
 
         
