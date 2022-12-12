@@ -1,8 +1,10 @@
+import copy
+
 # insert read files to data array
 data = []
 
 # read files
-with open("hmm.in",'r') as file:
+with open("test_hmm.in",'r') as file:
     for row in file:
         data.append(row.rstrip('\n'))
 file.close()
@@ -37,10 +39,19 @@ prob_dict[key[0]+p_states[1]] = float(data[5][1])   # S to F
 prob_dict[key[1]+p_states[0]] = float(data[6][0])   # T to E
 prob_dict[key[1]+p_states[1]] = float(data[6][1])   # T to F
 
+main_dict = copy.deepcopy(prob_dict)
+
+strings = []
+for cnt in range(1,loop_count+1):
+    strings.append(data[cnt])
 
 for run in range(0,loop_count):
-    #string = data[run]
-    string = "STSSTSTSSSTT"
+    string = strings[run]
+    print(string)
+    output.write("Sequence: ")
+    output.write(string)
+    output.write("\n")
+
     if string[0] == key[0]:
         prob_dict[key[0]] = 1
     else:
@@ -57,7 +68,8 @@ for run in range(0,loop_count):
 
     # S with next state S
     ss_total = 0
-    for i in range(0,string_len):
+    for i in range(0,string_len-1):
+    #for i in range(0,string_len):
         if string[i] == key[0]: # if char == "S"
             if string[i+1] == key[0]: # if next char is also S
                 ss_total += 1
@@ -102,18 +114,22 @@ for run in range(0,loop_count):
         given.append(given_string)
 
     # temp
-    sample = "S3E3"
-    sample2 = "S3F3"
-    given.clear()
-    given.append(sample)
-    given.append(sample2)
+    # sample = "S1E1"
+    # sample2 = "T2F2"
+    # sample3 = "S3E3"
+    # sample4 = "S3F3"
+    # given.clear()
+    # given.append(sample)
+    # given.append(sample2)
+    # given.append(sample3)
+    # given.append(sample4)
     # delete later
 
-    str_len = len(sample)
+    str_len = int(case_count)
 
     # SOLVING PART
-    #for j in range(0, int(case_count)):
-    for j in range(0, 2):   # temp
+    for j in range(0, int(case_count)):
+    #for j in range(0, 2):   # temp
         check_num = int(given[j][1])    # if T3E3 = 3
         for i in range(0,check_num+1):
             index = i + 1
@@ -156,10 +172,18 @@ for run in range(0,loop_count):
             temp = prob_dict.get(key3)*prob_dict.get(key1)/prob_dict.get(key2)
             prob_dict[given[j]] = temp
             print(given[j], " = ",temp)
+            output.write("P(")
+            output.write(given[j])
+            output.write(") = ")
+            output.write(str(temp))
+            output.write("\n")
         # END SOLVING PART
 
 
-
+    print(prob_dict)
+    prob_dict.clear()
+    prob_dict = main_dict
+    output.write("\n")
     # # Sorting dictionary
     # new_d = {}
     # for k in sorted(prob_dict, key=len, reverse=True):
